@@ -1,0 +1,10 @@
+this lib should support:
+- two serialization formats: xml and json
+- (at least) two connection protocols: http/s and scgi (Unix socket)
+
+xml:
+- http/s, use xmlrpc python lib
+- https://github.com/cjlucas/rtorrent-python/blob/master/rtorrent/lib/xmlrpc/scgi.py
+
+json
+- both, might be able to use https://github.com/visualfc/liteide/blob/e9b635bd5e234a43671db324eaf94236ffe067f2/liteidex/src/3rdparty/qjsonrpc/tests/manual/python/jsonrpc.py

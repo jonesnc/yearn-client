@@ -1,0 +1,16 @@
+version: "3"
+services:
+  rtorrent:
+    hostname: rtorrent
+    image: jesec/rtorrent
+    user: 1000:1000
+    restart: "no"
+    command: -o network.port_range.set=50001-50001,system.daemon.set=true
+    environment:
+      HOME: /config
+    volumes:
+      - ./rtorrent/config:/config
+      - ./rtorrent/data:/data
+    ports:
+      - 0.0.0.0:50001:50001
+      - 0.0.0.0:5001:5000

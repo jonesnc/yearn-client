@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# rtorrent client dirs
+rtorrent/config/*
+rtorrent/data/*
