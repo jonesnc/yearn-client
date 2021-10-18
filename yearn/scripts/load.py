@@ -21,6 +21,7 @@ def load(path, scgi, mount=None):
         host_base_dir, mount_base_dir = mount.split(':')
     client = Client(uri=scgi)
     torrent_hashes = client.info_hashes()
+
     if os.path.isdir(path):
         for dir, torrent_file in get_all_torrent_files(path):
             full_host_torrent_file_path = os.path.join(dir, torrent_file)
@@ -44,8 +45,10 @@ def load(path, scgi, mount=None):
                     torrent_file=full_host_torrent_file_path,
                     directory=mount_full_path,
                     use_dir_as_base=True,
-                    perform_check_hash=True,
+                    perform_check_hash=False,
                     set_addtime=True,
+                    add_started=True,
+                    set_completed=True,
                 )
     elif os.path.isfile(path):
         pass
