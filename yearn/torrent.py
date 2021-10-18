@@ -69,6 +69,15 @@ class Torrent(ServerCache):
                 f'Expected type str, got {type(result)}')
 
     @property
+    def size_bytes(self):
+        result = self._server.d.size_bytes(self.hash)
+        if isinstance(result, int):
+            return result
+        else:
+            raise XmlrpcResultTypeException(
+                f'Expected type int, got {type(result)}')
+
+    @property
     def chunk_size(self):
         result = self._server.d.chunk_size(self.hash)
         if isinstance(result, int):
@@ -80,6 +89,15 @@ class Torrent(ServerCache):
     @property
     def chunk_size_bytes(self):
         result = self._server.d.chunk_size(self.hash)
+        if isinstance(result, int):
+            return result
+        else:
+            raise XmlrpcResultTypeException(
+                f'Expected type int, got {type(result)}')
+
+    @property
+    def size_chunks(self):
+        result = self._server.d.size_chunks(self.hash)
         if isinstance(result, int):
             return result
         else:
