@@ -35,11 +35,7 @@ def load(path, scgi, mount=None):
             if not torrent_hash in torrent_hashes:
 
                 mount_full_path = dir.replace(host_base_dir, mount_base_dir)
-                mount_full_path = re.escape(mount_full_path)
-                mount_full_path = mount_full_path.replace(
-                    ',', '\,')
-                mount_full_path = mount_full_path.replace(
-                    ';', '\;')
+
                 click.echo(f'Adding {torrent_file}')
                 client.load_torrent(
                     torrent_file=full_host_torrent_file_path,

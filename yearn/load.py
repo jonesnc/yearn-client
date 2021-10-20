@@ -1,8 +1,9 @@
 import math
 import os
 from enum import Enum
+from pprint import pprint
 from time import time
-from typing import Optional
+from typing import Optional, Sequence
 from xmlrpc import client
 
 import bencodepy
@@ -27,11 +28,11 @@ class LoadAPIMixin(ServerCache):
 
         with open(torrent_file, 'rb') as f:
             raw_torrent_data = client.Binary(f.read())
-            load_args = ['', raw_torrent_data]
+            load_args: Sequence = ['', raw_torrent_data]
             if use_dir_as_base:
-                directory_cmd = f'd.directory_base.set={directory}'
+                directory_cmd = f'd.directory_base.set="{directory}"'.encode('utf-8')
             else:
-                directory_cmd = f'd.directory.set={directory}'
+                directory_cmd = f'd.directory.set="{directory}"'.encode('utf-8')
 
             load_args.append(directory_cmd)
             if perform_check_hash:
@@ -59,6 +60,7 @@ class LoadAPIMixin(ServerCache):
                         ],
                         'length': tt_class._struct['info']['length']
                     }]
+
                 for file in tt_files:
                     file_length = file['length']
                     host_torrent_file_dir = os.path.dirname(torrent_file)
@@ -98,18 +100,10 @@ class LoadAPIMixin(ServerCache):
 
                 load_args[1] = raw_data_with_resume
 
-            try:
-                if add_started:
-                    self._server.load.raw_start_verbose(*load_args)
-                else:
-                    self._server.load.raw_verbose(*load_args)
-            except ConnectionResetError as e:
-                # This can sometimes happen if the '
-                # directory name contains a special character (e.g., ñ).
-                #
-                # TODO: figure out why this exception is thrown, see if
-                # we can correct this request instead of catching the exception
-                pass
+            if add_started:
+                self._server.load.raw_start_verbose(*load_args)
+            else:
+                self._server.load.raw_verbose(*load_args)
 
             torrent = Torrent(server=self._server, hash=tt_class.info_hash)
 
