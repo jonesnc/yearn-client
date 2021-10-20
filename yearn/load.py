@@ -28,7 +28,10 @@ class LoadAPIMixin(ServerCache):
 
         with open(torrent_file, 'rb') as f:
             raw_torrent_data = client.Binary(f.read())
-            load_args: Sequence = ['', raw_torrent_data]
+            load_args = ['', raw_torrent_data]
+
+            directory = directory.replace('"', '\\"')
+
             if use_dir_as_base:
                 directory_cmd = f'd.directory_base.set="{directory}"'.encode('utf-8')
             else:
