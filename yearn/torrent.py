@@ -10,18 +10,9 @@ from yearn.tracker import Tracker
 
 class Torrent(ServerCache):
 
-    def __init__(self, server, hash, name=None, base_filename=None,
-                 base_path=None, directory=None, directory_base=None):
-        # TODO: should this be simplified to only require the hash on init?
+    def __init__(self, server, torrent_hash):
         super().__init__(server=server)
-
-        # TODO: move these to property's
-        self.hash: str = hash
-        self.name: str = name
-        self.base_filename: str = base_filename
-        self.base_path: str = base_path
-        self.directory: str = directory
-        self.directory_base: str = directory_base
+        self.hash: str = torrent_hash
 
     def __str__(self):
         return f'Torrent (hash={self.hash},name={self.name})'
@@ -43,6 +34,26 @@ class Torrent(ServerCache):
 
     def erase(self):
         return self._server.d.erase(self.hash)
+
+    @property
+    def name(self):
+        return self._server.d.name(self.hash)
+
+    @property
+    def base_filename(self):
+        return self._server.d.base_filename(self.hash)
+
+    @property
+    def base_path(self):
+        return self._server.d.base_path(self.hash)
+
+    @property
+    def base_directory(self):
+        return self._server.d.base_directory(self.hash)
+
+    @property
+    def base_directory_base(self):
+        return self._server.d.base_directory_base(self.hash)
 
     @property
     def accepting_seeders(self):
