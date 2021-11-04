@@ -6,6 +6,7 @@ import torrentool
 from torrentool.api import Torrent as Torrentool
 
 from yearn import Client
+from yearn.torrent import Torrent
 
 
 def get_all_torrent_files(path):
@@ -32,7 +33,8 @@ def load(path, scgi, mount=None):
                     f'Invalid torrent file: {full_host_torrent_file_path}')
                 continue
             torrent_hash = torrent.info_hash.upper()
-            if not torrent_hash in torrent_hashes:
+
+            if torrent_hash not in torrent_hashes:
 
                 mount_full_path = dir.replace(host_base_dir, mount_base_dir)
 
@@ -46,6 +48,14 @@ def load(path, scgi, mount=None):
                     add_started=True,
                     set_completed=True,
                 )
+
+            else:
+                torrent_in_rtorrent = client.get_torrent(
+                    torrent_hash=torrent_hash)
+                if not torrent_in_rtorrent.complete:
+                    print((
+                        f'{torrent_in_rtorrent.name} '
+                        f'({torrent_in_rtorrent.hash}) is incomplete!'))
     elif os.path.isfile(path):
         pass
     else:

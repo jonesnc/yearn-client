@@ -53,7 +53,7 @@ class LoadAPIMixin(ServerCache):
                 chunk_size = tt_class._struct['info']['piece length']
                 files = []
                 total_size = tt_class.total_size
-                # TODO: account for single-file torrents
+
                 if 'files' in tt_class._struct['info']:
                     tt_files = tt_class._struct['info']['files']
                 else:
@@ -108,6 +108,8 @@ class LoadAPIMixin(ServerCache):
             else:
                 self._server.load.raw_verbose(*load_args)
 
-            torrent = Torrent(server=self._server, hash=tt_class.info_hash)
+            torrent = Torrent(
+                server=self._server,
+                torrent_hash=tt_class.info_hash)
 
             return torrent

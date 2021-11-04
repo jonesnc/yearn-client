@@ -4,6 +4,7 @@ from yearn.download import DownloadAPIMixin
 from yearn.load import LoadAPIMixin
 from yearn.method import MethodAPIMixin
 from yearn.system import SystemAPIMixin
+from yearn.torrent import Torrent
 
 
 class Client(
@@ -12,4 +13,6 @@ class Client(
     LoadAPIMixin,
     MethodAPIMixin,
 ):
-    pass
+
+    def get_torrent(self, torrent_hash: str) -> Torrent:
+        return Torrent(server=self._server, torrent_hash=torrent_hash)
